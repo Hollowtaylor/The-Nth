@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,10 +12,12 @@ public class PlayerController : MonoBehaviour
     private InputControls _controls;
     
     [SerializeField]protected float speed;
+    [SerializeField]protected float jumpForce;
     
     private bool _moving;
     private float _movDir;
     private bool _jump;
+    [SerializeField] private bool _isGrounded;
 
     private void Awake()
     {
@@ -54,10 +58,17 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
+        if (!_isGrounded) return;
         var direction = _moving
-            ? new Vector3(_movDir * speed * Time.deltaTime, 1 * speed * Time.deltaTime)
-            : new Vector3(0, 1 * speed * Time.deltaTime);
+            ? new Vector3(_movDir * speed * Time.deltaTime, 10 * jumpForce * Time.deltaTime)
+            : new Vector3(0, 10 * jumpForce * Time.deltaTime);
         transform.position += direction;
+        _isGrounded = false;
         _jump = false;
+    }
+
+    public void OnCollisionStay2D(Collision2D other)
+    {
+        _isGrounded = true;
     }
 }
