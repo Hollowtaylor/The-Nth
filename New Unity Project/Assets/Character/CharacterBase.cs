@@ -18,7 +18,7 @@ public class CharacterBase : MonoBehaviour
     
     
     private bool _moving;
-    private Vector2 _movDir = Vector2.zero;
+    private float _movDir;
     public enum States  { Idle, Moving, Attacking }
 
     [SerializeField] private States state = States.Idle;
@@ -42,7 +42,7 @@ public class CharacterBase : MonoBehaviour
 
     private void OnMoveOnStarted(InputAction.CallbackContext ctx)
     {
-        _movDir = ctx.ReadValue<Vector2>();
+        _movDir = ctx.ReadValue<float>();
         _moving = true;
     }
 
@@ -64,7 +64,7 @@ public class CharacterBase : MonoBehaviour
 
     protected void Move()
     {
-        var direction = new Vector3(_movDir.x, _movDir.y);451
+        var direction = new Vector3(_movDir, 0);
         transform.position += direction;
     }
 
