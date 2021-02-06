@@ -6,23 +6,42 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController _characterController;
     
+    private InputControls _controls;
     
-    public PlayerController(CharacterController characterController)
+    [SerializeField]protected float speed;
+    
+    private bool _moving;
+    private float _movDir;
+    
+    private void Awake()
     {
-        _characterController = characterController;
+        _controls = new InputControls();
+        _controls.Enable();
+
+        _controls.Player.Move.started += OnMoveOnStarted;
+        _controls.Player.Move.canceled += ctx => _moving = false;
     }
 
-
-    public void MoveCharacter(InputValue value)
+    private void OnMoveOnStarted(InputAction.CallbackContext ctx)
     {
-        _characterController.Move(value.Get<Vector2>());
+        _movDir = ctx.ReadValue<float>();
+        _moving = true;
+    }
+    
+    private void FixedUpdate()
+    {
+        if (_moving)
+        {
+            Move();
+        }
+
     }
 
-    public void MoveRight()
+    private void Move()
     {
-        
+        var direction = new Vector3(_movDir * speed * Time.deltaTime, 0);
+        transform.position += direction;
     }
 
 
