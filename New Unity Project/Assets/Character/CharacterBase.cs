@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class CharacterBase : MonoBehaviour
@@ -15,9 +16,14 @@ public class CharacterBase : MonoBehaviour
     [SerializeField]protected float damage;
     [SerializeField]protected float armour;
     
+    
+    private bool _moving;
+    private Vector2 _movDir = Vector2.zero;
     public enum States  { Idle, Moving, Attacking }
 
     [SerializeField] private States state = States.Idle;
+    
+
 
     public States State {
         get => state;
@@ -28,7 +34,16 @@ public class CharacterBase : MonoBehaviour
     private void Awake()
     {
         _controls = new InputControls();
-        _controls.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>());
+        _controls.Enable();
+
+        _controls.Player.Move.started += OnMoveOnStarted;
+        _controls.Player.Move.canceled += ctx => _moving = false;
+    }
+
+    private void OnMoveOnStarted(InputAction.CallbackContext ctx)
+    {
+        _movDir = ctx.ReadValue<Vector2>();
+        _moving = true;
     }
 
     // Start is called before the first frame update
@@ -38,23 +53,28 @@ public class CharacterBase : MonoBehaviour
     }
 
     // Update is called once per frame
-    protected void Update()
+    protected void FixedUpdate()
     {
-        
+        if (_moving)
+        {
+            Move();
+        }
+
     }
 
-    protected void Move(Vector2 direction)
+    protected void Move()
     {
-        Debug.Log("Moving: " + direction);
+        var direction = new Vector3(_movDir.x, _movDir.y);451
+        transform.position += direction;
     }
 
-    private void OnEnable()
-    {
-        _controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _controls.Disable();
-    }
+    // private void OnEnable()
+    // {
+    //     _controls.Enable();
+    // }
+    //
+    // private void OnDisable()
+    // {
+    //     _controls.Disable();
+    // }
 }
