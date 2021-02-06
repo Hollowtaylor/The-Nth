@@ -2,8 +2,8 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-*/[Ll]ibrary/
-*/[Tt]emp/
+New Unity Project/Library/
+New Unity Project/Temp/
 */[Oo]bj/
 */[Bb]uild/
 */[Bb]uilds/
@@ -59,6 +59,6 @@ sysinfo.txt
 crashlytics-build.properties
 
 
-New Unity Project/Temp/UnityLockfile
+New Unity Project/Temp/
 
 New Unity Project/Library/
