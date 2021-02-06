@@ -1,10 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 [RequireComponent(typeof(PlayerController))]
 public class CharacterBase : MonoBehaviour
@@ -17,7 +11,7 @@ public class CharacterBase : MonoBehaviour
     [SerializeField]protected float damage;
     [SerializeField]protected float armour;
 
-    public enum States  { Idle, Moving, Attacking }
+    public enum States  { Idle, Moving, Jump, Attacking }
 
     [SerializeField] private States state = States.Idle;
     
@@ -25,7 +19,7 @@ public class CharacterBase : MonoBehaviour
 
     public States State {
         get => state;
-        protected set => state = value;
+        set => state = value;
     }
 
 
@@ -34,4 +28,20 @@ public class CharacterBase : MonoBehaviour
         _controller = GetComponent<PlayerController>();
     }
 
+    protected void FixedUpdate()
+    {
+        switch (state)
+        {
+            case States.Idle:
+                break;
+            case States.Moving:
+                _controller.Move();
+                break;
+            case States.Jump:
+                _controller.Jump();
+                break;
+            case States.Attacking:
+                break;
+        }
+    }
 }
