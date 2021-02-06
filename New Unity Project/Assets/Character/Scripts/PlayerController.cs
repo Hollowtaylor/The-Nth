@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviour
     
     private bool _moving;
     private float _movDir;
-    
+    private bool _jump;
+
     private void Awake()
     {
         _controls = new InputControls();
@@ -21,7 +22,9 @@ public class PlayerController : MonoBehaviour
 
         _controls.Player.Move.started += OnMoveOnStarted;
         _controls.Player.Move.canceled += ctx => _moving = false;
+        _controls.Player.Jump.performed += _ => _jump = true;
     }
+    
 
     private void OnMoveOnStarted(InputAction.CallbackContext ctx)
     {
@@ -36,6 +39,11 @@ public class PlayerController : MonoBehaviour
             Move();
         }
 
+        if (_jump)
+        {
+            Jump();
+        }
+
     }
 
     private void Move()
@@ -44,6 +52,12 @@ public class PlayerController : MonoBehaviour
         transform.position += direction;
     }
 
-
-
+    public void Jump()
+    {
+        var direction = _moving
+            ? new Vector3(_movDir * speed * Time.deltaTime, 1 * speed * Time.deltaTime)
+            : new Vector3(0, 1 * speed * Time.deltaTime);
+        transform.position += direction;
+        _jump = false;
+    }
 }
