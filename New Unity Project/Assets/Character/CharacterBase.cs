@@ -15,6 +15,8 @@ public class CharacterBase : MonoBehaviour
     [SerializeField]protected float xp;
     [SerializeField]protected float damage;
     [SerializeField]protected float armour;
+    [SerializeField]protected float speed;
+    
     
     
     private bool _moving;
@@ -64,7 +66,7 @@ public class CharacterBase : MonoBehaviour
 
     protected void Move()
     {
-        var direction = new Vector3(_movDir, 0);
+        var direction = new Vector3(_movDir * speed * Time.deltaTime, 0);
         transform.position += direction;
     }
 
