@@ -64,9 +64,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df128e434d2ca844b8efece3513b3393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movDir: 0
   speed: 10
-  jumpForce: 10
-  _isGrounded: 0
+  jumpForce: 15
+  isGrounded: 0
+  isMoving: 0
+  _direction: {x: 0, y: 0}
 --- !u!212 &6569414720560608656
 SpriteRenderer:
   m_ObjectHideFlags: 0
