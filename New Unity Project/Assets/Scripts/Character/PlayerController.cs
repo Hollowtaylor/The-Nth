@@ -21,11 +21,11 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        
         _rb = GetComponent<Rigidbody2D>();
         _character = GetComponent<CharacterBase>();
         _controls = new InputControls();
         _controls.Enable();  // activate the input system
-        
 
         /*
          * Started - Key Held
