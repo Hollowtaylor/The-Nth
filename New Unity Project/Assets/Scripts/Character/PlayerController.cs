@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isGrounded;
     [SerializeField] private bool isMoving;
     [SerializeField] private Vector2 _direction;
+    [SerializeField] private bool _canInteract;
 
     private void Awake()
     {
@@ -81,11 +82,25 @@ public class PlayerController : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D other)
     {
-        
-        isGrounded = true;
-        _direction = new Vector2(_direction.x, 0);
-        // ternary operator, true(left) / false(right) check
-        _character.State = movDir == 0 ? CharacterBase.States.Idle : CharacterBase.States.Moving;
+        if (other.gameObject.CompareTag("Floor"))
+        {
+            isGrounded = true;
+            _direction = new Vector2(_direction.x, 0);
+            // ternary operator, true(left) / false(right) check
+            _character.State = movDir == 0 ? CharacterBase.States.Idle : CharacterBase.States.Moving;
+        }
+
+        if (other.gameObject.CompareTag("Interactable"))
+        {
+            _canInteract = true;
+        }
     }
-    
+
+    public void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Interactable"))
+        {
+            _canInteract = false;
+        }
+    }
 }
